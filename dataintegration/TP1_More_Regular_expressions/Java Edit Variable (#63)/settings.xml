@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.knime.org/2008/09/XMLConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">
+    <entry key="node_file" type="xstring" value="settings.xml"/>
+    <config key="flow_stack">
+        <config key="Variable_0">
+            <entry key="type" type="xstring" value="variable"/>
+            <entry key="name" type="xstring" value="out_status"/>
+            <entry key="class" type="xstring" value="STRING"/>
+            <entry key="value" type="xstring" value=""/>
+        </config>
+        <config key="Variable_1">
+            <entry key="type" type="xstring" value="variable"/>
+            <entry key="name" type="xstring" value="out_status"/>
+            <entry key="class" type="xstring" value="STRING"/>
+            <entry key="value" type="xstring" value="SUCESSO: Ficheiro cifrado gerado!"/>
+        </config>
+    </config>
+    <config key="internal_node_subsettings">
+        <entry key="memory_policy" type="xstring" value="CacheSmallInMemory"/>
+    </config>
+    <config key="model">
+        <entry key="scriptImports" type="xstring" value="// Your custom imports:%%00010import java.io.*;%%00010import java.nio.file.*;%%00010import java.security.*;%%00010import javax.crypto.*;%%00010import javax.crypto.spec.*;%%00010"/>
+        <entry key="scriptFields" type="xstring" value="// Your custom variables:%%00010"/>
+        <entry key="scriptBody" type="xstring" value="// Enter your code here:%%00010try {%%00010    // 1. Diretoria base dinâmica da máquina onde o KNIME estiver a correr%%00010    Path dataDir = Paths.get(v_knimeworkspace, &quot;TP1_More_Regular_expressions&quot;, &quot;data&quot;);%%00010%%00010    Path inputPath = dataDir.resolve(&quot;portefolio_cripto_ecn.xlsx&quot;);%%00010    if (!Files.exists(inputPath)) {%%00010        inputPath = dataDir.resolve(&quot;portefolio_cripto.xlsx&quot;);%%00010    }%%00010%%00010    if (!Files.exists(inputPath)) {%%00010        out_out_status = &quot;ERRO: Ficheiro original nao encontrado em &quot; + inputPath.toAbsolutePath().toString();%%00010        return;%%00010    }%%00010%%00010    Path outputPath = dataDir.resolve(&quot;portefolio_cripto_cript.xlsx&quot;);%%00010%%00010    // 2. Hash SHA-256 da password para garantir 32 bytes (256 bits) exatos para AES%%00010    String pass = &quot;isi_password_2026_segredo_ipca!&quot;;%%00010    MessageDigest sha = MessageDigest.getInstance(&quot;SHA-256&quot;);%%00010    byte[] keyBytes = sha.digest(pass.getBytes(&quot;UTF-8&quot;));%%00010    SecretKeySpec keySpec = new SecretKeySpec(keyBytes, &quot;AES&quot;);%%00010%%00010    byte[] iv = new byte[16];%%00010    IvParameterSpec ivSpec = new IvParameterSpec(iv);%%00010%%00010    // 3. Cifra AES-256 CBC%%00010    Cipher cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);%%00010    cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);%%00010%%00010    byte[] inputBytes = Files.readAllBytes(inputPath);%%00010    byte[] encryptedBytes = cipher.doFinal(inputBytes);%%00010%%00010    Files.write(outputPath, encryptedBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);%%00010%%00010    out_out_status = &quot;SUCESSO: Ficheiro cifrado gerado!&quot;;%%00010%%00010} catch (Exception e) {%%00010    out_out_status = &quot;EXCECAO: &quot; + e.getClass().getSimpleName() + &quot; - &quot; + e.getMessage();%%00010}%%00010"/>
+        <config key="jarFiles">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="outCols">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="outVars">
+            <entry key="array-size" type="xint" value="1"/>
+            <config key="0">
+                <entry key="Name" type="xstring" value="out_status"/>
+                <entry key="JavaName" type="xstring" value="out_out_status"/>
+                <entry key="JavaType" type="xstring" value="java.lang.String"/>
+                <entry key="Type" type="xstring" value="STRING"/>
+                <entry key="replaceExisting" type="xboolean" value="false"/>
+            </config>
+        </config>
+        <config key="inCols">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="inVars">
+            <entry key="array-size" type="xint" value="1"/>
+            <config key="0">
+                <entry key="Name" type="xstring" value="knime.workspace"/>
+                <entry key="JavaName" type="xstring" value="v_knimeworkspace"/>
+                <entry key="JavaType" type="xstring" value="java.lang.String"/>
+                <entry key="Type" type="xstring" value="STRING"/>
+            </config>
+        </config>
+        <entry key="version" type="xstring" value="version 1.x"/>
+        <entry key="templateUUID" type="xstring" isnull="true" value=""/>
+        <entry key="runOnExecute" type="xboolean" value="true"/>
+        <config key="bundles">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+    </config>
+    <entry key="customDescription" type="xstring" isnull="true" value=""/>
+    <entry key="state" type="xstring" value="EXECUTED"/>
+    <entry key="factory" type="xstring" value="org.knime.base.node.jsnippet.JavaEditVarNodeFactory"/>
+    <entry key="node-name" type="xstring" value="Java Edit Variable"/>
+    <entry key="node-bundle-name" type="xstring" value="KNIME Java Snippet Nodes"/>
+    <entry key="node-bundle-symbolic-name" type="xstring" value="org.knime.jsnippets"/>
+    <entry key="node-bundle-vendor" type="xstring" value="KNIME AG, Zurich, Switzerland"/>
+    <entry key="node-bundle-version" type="xstring" value="5.12.0.v202606171353"/>
+    <entry key="node-feature-name" type="xstring" value="KNIME Javasnippet"/>
+    <entry key="node-feature-symbolic-name" type="xstring" value="org.knime.features.javasnippet.feature.group"/>
+    <entry key="node-feature-vendor" type="xstring" value="KNIME AG, Zurich, Switzerland"/>
+    <entry key="node-feature-version" type="xstring" value="5.12.0.v202606171353"/>
+    <config key="factory_settings"/>
+    <entry key="name" type="xstring" value="Java Edit Variable"/>
+    <entry key="hasContent" type="xboolean" value="true"/>
+    <entry key="isInactive" type="xboolean" value="false"/>
+    <config key="ports">
+        <config key="port_1">
+            <entry key="index" type="xint" value="1"/>
+            <entry key="port_spec_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObjectSpec"/>
+            <entry key="port_object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject"/>
+            <entry key="port_object_summary" type="xstring" value="Variables connection"/>
+            <entry key="port_spec_location" type="xstring" value="spec/spec.zip"/>
+            <entry key="port_object_location" type="xstring" value="object/portobject.zip"/>
+            <entry key="port_dir_location" type="xstring" value="port_1"/>
+        </config>
+    </config>
+    <config key="filestores">
+        <entry key="file_store_location" type="xstring" isnull="true" value=""/>
+        <entry key="file_store_id" type="xstring" value="bd3f6252-c956-4222-be9e-5e9649b8240d"/>
+    </config>
+</config>
