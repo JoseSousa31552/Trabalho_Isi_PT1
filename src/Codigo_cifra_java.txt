@@ -1,0 +1,77 @@
+// system imports
+import org.knime.base.node.jsnippet.expression.AbstractJSnippet;
+import org.knime.base.node.jsnippet.expression.Abort;
+import org.knime.base.node.jsnippet.expression.Cell;
+import org.knime.base.node.jsnippet.expression.ColumnException;
+import org.knime.base.node.jsnippet.expression.TypeException;
+import static org.knime.base.node.jsnippet.expression.Type.*;
+import java.util.Date;
+import java.util.Calendar;
+import org.w3c.dom.Document;
+
+
+// Your custom imports:
+import java.io.*;
+import java.nio.file.*;
+import java.security.*;
+import javax.crypto.*;
+import javax.crypto.spec.*;
+
+// system variables
+public class JSnippet extends AbstractJSnippet {
+  // Fields for input flow variables
+  /** Input flow variable: "knime.workspace" */
+  public String v_knimeworkspace;
+
+  // Fields for output flow variables
+  /** Output flow variable: "out_status" */
+  public String out_out_status;
+
+// Your custom variables:
+
+// expression start
+    public void snippet() throws TypeException, ColumnException, Abort {
+// Enter your code here:
+try {
+    // 1. Diretoria base dinâmica da máquina onde o KNIME estiver a correr
+    Path dataDir = Paths.get(v_knimeworkspace, "TP1_More_Regular_expressions", "data");
+
+    Path inputPath = dataDir.resolve("portefolio_cripto_ecn.xlsx");
+    if (!Files.exists(inputPath)) {
+        inputPath = dataDir.resolve("portefolio_cripto.xlsx");
+    }
+
+    if (!Files.exists(inputPath)) {
+        out_out_status = "ERRO: Ficheiro original nao encontrado em " + inputPath.toAbsolutePath().toString();
+        return;
+    }
+
+    Path outputPath = dataDir.resolve("portefolio_cripto_cript.xlsx");
+
+    // 2. Hash SHA-256 da password para garantir 32 bytes (256 bits) exatos para AES
+    String pass = "isi_password_2026_segredo_ipca!";
+    MessageDigest sha = MessageDigest.getInstance("SHA-256");
+    byte[] keyBytes = sha.digest(pass.getBytes("UTF-8"));
+    SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
+
+    byte[] iv = new byte[16];
+    IvParameterSpec ivSpec = new IvParameterSpec(iv);
+
+    // 3. Cifra AES-256 CBC
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+
+    byte[] inputBytes = Files.readAllBytes(inputPath);
+    byte[] encryptedBytes = cipher.doFinal(inputBytes);
+
+    Files.write(outputPath, encryptedBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+    out_out_status = "SUCESSO: Ficheiro cifrado gerado!";
+
+} catch (Exception e) {
+    out_out_status = "EXCECAO: " + e.getClass().getSimpleName() + " - " + e.getMessage();
+}
+
+// expression end
+    }
+}
