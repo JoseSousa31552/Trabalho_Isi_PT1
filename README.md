@@ -23,35 +23,24 @@ Os resultados são armazenados numa base de dados PostgreSQL alojada na platafor
 
 ```text
 tp01-31552/
-│
 ├── README.md
-│
 ├── doc/
 │   └── 31552_doc.pdf
-│
 ├── dataintegration/
 │   └── [Workflow KNIME]
-│
 ├── data/
 │   ├── [Ficheiros utilizados pelo workflow]
-│   │
 │   ├── input/
 │   │   └── [Exemplos de dados de entrada]
-│   │
 │   └── output/
 │       └── [Exemplos de resultados]
-│
 └── src/
     └── [Scripts de desencriptação]
 ```
 
-### Observação sobre os diretórios de dados
-
 Os diretórios `data/input/` e `data/output/` contêm ficheiros de exemplo, organizados de acordo com a estrutura de entrega sugerida.
 
 Os ficheiros efetivamente utilizados pelo workflow encontram-se diretamente na pasta `data/`, de forma a preservar os caminhos relativos definidos durante o desenvolvimento no KNIME.
-
-Esta organização permite manter a configuração original do projeto sem necessidade de alterar os caminhos dos nós de leitura, exportação e processamento.
 
 ## 3. Tecnologias utilizadas
 
@@ -80,9 +69,7 @@ Para executar o processo ETL:
 5. Executar o workflow no KNIME.
 6. Consultar os resultados na base de dados PostgreSQL e nos ficheiros gerados na pasta `data/`.
 
-O processo inclui ainda a cifra do ficheiro Excel e o seu envio por correio eletrónico, dependendo da configuração do respetivo serviço de email.
-
-**Nota:** a execução completa pode exigir a configuração de credenciais de acesso à base de dados e ao serviço de correio eletrónico.
+A execução completa pode exigir a configuração de credenciais de acesso à base de dados e ao serviço de correio eletrónico.
 
 ## 5. Desencriptação do ficheiro Excel
 
@@ -108,7 +95,13 @@ O relatório técnico encontra-se disponível em:
 
 O documento descreve a arquitetura da solução, as transformações realizadas, os cálculos financeiros, os processos de persistência e exportação, os mecanismos de proteção criptográfica e as limitações identificadas.
 
-O acesso ao vídeo de demonstração do funcionamento do projeto é disponibilizado no relatório através de uma hiperligação e de um código QR.
+### Vídeo de demonstração
+
+A demonstração prática do funcionamento do projeto encontra-se disponível no YouTube, através da seguinte ligação:
+
+**[Ver vídeo de demonstração do projeto ETL](https://www.youtube.com/watch?v=EFuWirJRA6U)**
+
+https://www.youtube.com/watch?v=EFuWirJRA6U
 
 ## 8. Observações finais
 
